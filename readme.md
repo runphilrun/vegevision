@@ -8,6 +8,9 @@
 here are all the functions you can use and why they are here
 
 
+## colormap
+https://publiclab.org/notes/cfastie/08-26-2014/new-ndvi-colormap
+
 ## "SOLID" compliant approach
 
 - connect to camera
