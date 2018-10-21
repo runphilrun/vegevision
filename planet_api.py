@@ -18,6 +18,7 @@ def download_image(image_id):
     # Setup Planet Data API base URL
     base_url = 'https://api.planet.com/data/v1'
     item_type = 'PSScene4Band'
+    asset_types = ['analytic','analytic_xml']
 
     # Setup the session
     session = requests.Session()
@@ -30,7 +31,7 @@ def download_image(image_id):
         (base_url + '{}/items/{}/assets/').format(item_type, image_id))
 
     # extract the activation url from the item for the desired asset
-    item_activation_url = item.json()[asset_type]["_links"]["activate"]
+    item_activation_url = item.json()[asset_types]["_links"]["activate"]
 
     # request activation
     response = session.post(item_activation_url)
