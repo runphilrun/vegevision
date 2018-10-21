@@ -60,6 +60,7 @@ This returns the following plot.
 NDVI leverages the fact that chlorophyll in plants strongly reflects green light and near-infrared light.
 Further, healthier plants have more chlorophyll and denser vegetation has more leaves, and thus
 more surface area to reflect this light.
+Thus NDVI is used to measure the amount of photosynthetic activity in an area.
 
 ### The NDVI equation
 
@@ -78,7 +79,11 @@ RED = 0 -> (NIR-0)/(NIR+0) =  NIR/NIR =  1
 ```
 
 By normalizing this difference to the total reflected light in both of those bands,
-the NDVI value in areas of dense and healthy vegetation emerges much higher against the background.
+the NDVI value in areas of dense and healthy vegetation is much higher against the background.
+Note that NDVI is an _index_ and thus a unitless quantity.
+
+The colormap can influence how NDVI is interpreted by humans, and this topic is [discussed at length by user `cfastie` on PublicLab.org](https://publiclab.org/notes/cfastie/08-26-2014/new-ndvi-colormap).
+This repository includes the colormap discussed in this article.
 
 ### A closer look at near-infrared imagers
 

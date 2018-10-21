@@ -1,5 +1,28 @@
 import numpy as np
-from matplotlib import pyplot as plt
+import matplotlib
+import matplotlib.pyplot as plt
+import csv
+
+
+def load_cmap(csv_file, name='custom_cmap'):
+    '''Generate a custom colormap from a comma separated list of colors.
+    The contents of the file shall contain:
+        three columns (red, green, blue)
+        no headers
+        values between 0 and 255
+
+    In the future this function will be updated to handle files
+    containing headers and floats or hex as values.
+    '''
+    colors = []
+    with open(csv_file) as f:
+        reader = csv.reader(f)
+        for row in reader:
+            rgb = tuple(float(c) / 255 for c in row)
+            colors.append(rgb)
+
+    cm = matplotlib.colors.ListedColormap(colors, name=name)
+    return cm
 
 
 def plot_ndvi(ndvi, cm='RdYlGn'):
@@ -21,24 +44,7 @@ def show_ndvi_vs_rgb(rgb, ndvi, rgb_title='RGB', ndvi_title='NDVI'):
     # plot NDVI image below
     plt.subplot(2, 1, 2)
     plt.title(ndvi_title)
-    plot_ndvi(ndvi)
-
-    plt.show()
-
-
-def show_ndvi_vs_nir(nir, ndvi, nir_title='Near-infrared', ndvi_title='NDVI'):
-    '''Show RGB image and NDVI image side-by-side.
-    '''
-    # plot RGB image on top
-    plt.subplot(2, 1, 1)
-    plt.title(nir_title)
-    plt.imshow(nir, cmap='grayscale')
-    plt.colorbar()
-
-    # plot NDVI image below
-    plt.subplot(2, 1, 2)
-    plt.title(ndvi_title)
-    plot_ndvi(ndvi)
+    plot_ndvi(ndvi, cm=load_cmap('NDVI_VGYRM-lut.csv', name='ndvi'))
 
     plt.show()
 
