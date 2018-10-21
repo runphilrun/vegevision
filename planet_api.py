@@ -31,21 +31,23 @@ def download_image(image_id):
         item_type, image_id))
 
     # extract the activation url from the item for the desired asset
-    item_activation_url = item.json()[asset_types]["_links"]["activate"]
+    for asset_type in asset_types:
+        item_activation_url = item.json()[asset_type]["_links"]["activate"]
 
-    # request activation
-    response = session.post(item_activation_url)
+        # request activation
+        response = session.post(item_activation_url)
 
-    if not ((response.status_code == 200) or (response.status_code == 204)):
-        raise Exception(
-            'Request failed with status code %s' % response.status_code)
+        if not ((response.status_code == 200) or
+                (response.status_code == 204)):
+            raise Exception(
+                'Request failed with status code %s' % response.status_code)
 
 
 def get_TOAreflectance(image_id):
     '''Load top of atmosphere reflectance coefficients from image metadata.
     '''
 
-    filename = 'images/' + image_id + '/' + image_id + '_3B_AnalyticMS_metadata.xml'
+    filename = 'images/{0}/{0}_3B_AnalyticMS_metadata.xml'.format(image_id)
     if not os.path.isfile(filename):
         raise Exception('File %s does not exist.' % filename)
 
@@ -63,7 +65,8 @@ def get_TOAreflectance(image_id):
 
 
 def get_bands(image_id):
-    ''' Get individual color bands (Blue, Green, Red, Near-infrared) from image data and normalize to top of atmosphere reflectance.
+    ''' Get individual color bands (Blue, Green, Red, Near-infrared) from
+    image data and normalize to top of atmosphere reflectance.
     '''
     filename = 'images/' + image_id + '/' + image_id + '_3B_AnalyticMS.tif'
     if not os.path.isfile(filename):
