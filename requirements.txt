@@ -1,4 +1,3 @@
-planet
 rasterio
 matplotlib
 retrying

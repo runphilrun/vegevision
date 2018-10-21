@@ -8,7 +8,7 @@ import requests
 def download_image(image_id):
     '''Download image from Planet API.
 
-    References: 
+    References:
         https://github.com/planetlabs/notebooks/blob/master/jupyter-notebooks/data-api-tutorials/planet_data_api_introduction.ipynb
 
         https://developers.planet.com/docs/quickstart/downloading-imagery/
@@ -18,7 +18,7 @@ def download_image(image_id):
     # Setup Planet Data API base URL
     base_url = 'https://api.planet.com/data/v1'
     item_type = 'PSScene4Band'
-    asset_types = ['analytic','analytic_xml']
+    asset_types = ['analytic', 'analytic_xml']
 
     # Setup the session
     session = requests.Session()
@@ -27,8 +27,8 @@ def download_image(image_id):
     session.auth = (PLANET_API_KEY, '')
 
     # Make a GET request to the Planet Data API
-    item = session.get(
-        (base_url + '{}/items/{}/assets/').format(item_type, image_id))
+    item = session.get((base_url + '{}/items/{}/assets/').format(
+        item_type, image_id))
 
     # extract the activation url from the item for the desired asset
     item_activation_url = item.json()[asset_types]["_links"]["activate"]
@@ -37,8 +37,8 @@ def download_image(image_id):
     response = session.post(item_activation_url)
 
     if not ((response.status_code == 200) or (response.status_code == 204)):
-        raise Exception('Request failed with status code %s'%response.status_code)
-    
+        raise Exception(
+            'Request failed with status code %s' % response.status_code)
 
 
 def get_TOAreflectance(image_id):
@@ -47,7 +47,7 @@ def get_TOAreflectance(image_id):
 
     filename = 'images/' + image_id + '/' + image_id + '_3B_AnalyticMS_metadata.xml'
     if not os.path.isfile(filename):
-        raise Exception('File %s does not exist.'%filename)
+        raise Exception('File %s does not exist.' % filename)
 
     xmldoc = minidom.parse(filename)
     nodes = xmldoc.getElementsByTagName("ps:bandSpecificMetadata")
@@ -67,7 +67,7 @@ def get_bands(image_id):
     '''
     filename = 'images/' + image_id + '/' + image_id + '_3B_AnalyticMS.tif'
     if not os.path.isfile(filename):
-        raise Exception('File %s does not exist.'%filename)
+        raise Exception('File %s does not exist.' % filename)
 
     with rasterio.open(filename) as src:
         blue, green, red, nir = src.read()
@@ -80,7 +80,7 @@ def get_bands(image_id):
     nir = nir * TOAreflectance[4]
     return blue, green, red, nir
 
-    
+
 def get_image(image_id):
     '''Retrieve image data from planet data.
     Download files if they don't exist in ./images/

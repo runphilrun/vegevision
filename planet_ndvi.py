@@ -7,7 +7,8 @@ def planet_ndvi(image_id):
     blue, green, red, nir = planet_api.get_image(image_id)
     rgb = np.dstack((red, green, blue))
     ndvi = vegevision.get_ndvi(red, nir)
-    vegevision.show_ndvi_vs_rgb(rgb, ndvi)
+    vegevision.show_ndvi_vs_rgb(
+        rgb, ndvi, rgb_title='RGB (normalized reflectance)')
 
 
 def main():
