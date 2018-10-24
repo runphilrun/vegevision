@@ -7,12 +7,15 @@ import requests
 
 def download_image(image_id):
     '''Download image from Planet API.
+    This function requires the user to have a valid API key as
+    an environment variable.
 
     References:
         https://github.com/planetlabs/notebooks/blob/master/jupyter-notebooks/data-api-tutorials/planet_data_api_introduction.ipynb
 
         https://developers.planet.com/docs/quickstart/downloading-imagery/
     '''
+    # get api key
     PLANET_API_KEY = os.getenv('PL_API_KEY')
 
     # Setup Planet Data API base URL
@@ -36,7 +39,8 @@ def download_image(image_id):
 
         # request activation
         response = session.post(item_activation_url)
-
+        print('Asset {0} for image id {1} completed with status: {2}'.format(
+            asset_type, image_id, response.status_code))
         if not ((response.status_code == 200) or
                 (response.status_code == 204)):
             raise Exception(
@@ -46,11 +50,12 @@ def download_image(image_id):
 def get_TOAreflectance(image_id):
     '''Load top of atmosphere reflectance coefficients from image metadata.
     '''
-
+    # read data from file
     filename = 'images/{0}/{0}_3B_AnalyticMS_metadata.xml'.format(image_id)
     if not os.path.isfile(filename):
         raise Exception('File %s does not exist.' % filename)
 
+    # parse reflectance coefficients from xml data
     xmldoc = minidom.parse(filename)
     nodes = xmldoc.getElementsByTagName("ps:bandSpecificMetadata")
     coeffs = {}
@@ -66,31 +71,22 @@ def get_TOAreflectance(image_id):
 
 def get_bands(image_id):
     ''' Get individual color bands (Blue, Green, Red, Near-infrared) from
-    image data and normalize to top of atmosphere reflectance.
+    PlanetScope4Band assets normalized by top-of-atmosphere reflectance.
     '''
+    # check if the image file exists
     filename = 'images/' + image_id + '/' + image_id + '_3B_AnalyticMS.tif'
     if not os.path.isfile(filename):
         raise Exception('File %s does not exist.' % filename)
 
+    # read color channels from image file
     with rasterio.open(filename) as src:
         blue, green, red, nir = src.read()
 
+    # normalize image by top of atmosphere reflectance
     TOAreflectance = get_TOAreflectance(image_id)
-
     blue = blue * TOAreflectance[1]
     green = green * TOAreflectance[2]
     red = red * TOAreflectance[3]
     nir = nir * TOAreflectance[4]
-    return blue, green, red, nir
 
-
-def get_image(image_id):
-    '''Retrieve image data from planet data.
-    Download files if they don't exist in ./images/
-    analytics and analytics_xml assets
-    '''
-    if not os.path.isdir('images/' + image_id):
-        download_image(image_id)
-
-    blue, green, red, nir = get_bands(image_id)
     return blue, green, red, nir
