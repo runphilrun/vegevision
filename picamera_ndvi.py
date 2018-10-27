@@ -58,7 +58,7 @@ def picamera_ndvi(preview=False, resolution=(640, 480), framerate=60):
     time.sleep(2)
     print('Video stream started.')
 
-    directory = 'capture_' + str(get_time_ms() + '/')
+    directory = 'capture_' + str(get_time_ms()) + '/'
 
     # loop over the frames from the video stream indefinitely
     while True:
@@ -75,7 +75,7 @@ def picamera_ndvi(preview=False, resolution=(640, 480), framerate=60):
             if preview:
                 cv2.imshow("Video Input with NDVI", ndvi_colorized)
                 print('Displaying NDVI...')
-                
+
             save_image(ndvi, directory=directory)
 
         # if the `q` key was pressed, break from the loop
