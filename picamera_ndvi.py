@@ -69,7 +69,8 @@ def picamera_ndvi(resolution=(640, 480), framerate=60):
             # get NDVI from RGB image
             ndvi = vegevision.get_ndvi(b, r)
             ndvi_colorized = apply_custom_colormap(
-                ndvi, cmap=vegevision.load_cmap('NDVI_VGYRM-lut.csv'))
+                255 * ndvi.astype(np.uint8),
+                cmap=vegevision.load_cmap('NDVI_VGYRM-lut.csv'))
             # show the frame
             cv2.imshow("Video Input with NDVI", ndvi_colorized)
             print('Displaying NDVI...')
