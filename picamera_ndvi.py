@@ -22,11 +22,15 @@ def save_image(image, directory='capture/'):
     make_dir(directory)
     filename = str(get_time_ms) + '.jpg'
     cv2.imwrite(filename, image)
+    print('saved {0}{1}'.format(directory, filename))
 
 
 def picamera_ndvi(resolution=(640, 480), framerate=60):
     stream = PiVideoStream(resolution=resolution, framerate=framerate).start()
+    print('Video stream started.')
+
     directory = 'capture_' + str(get_time_ms)
+
     # loop over the frames from the video stream indefinitely
     while True:
         # grab the frame from the threaded video stream
@@ -38,8 +42,9 @@ def picamera_ndvi(resolution=(640, 480), framerate=60):
 
         # show the frame
         cv2.imshow("Video Input with NDVI", ndvi)
-        save_image(ndvi)
-
+        print('Displaying NDVI...')
+        save_image(ndvi, directory=directory)
+        
         # if the `q` key was pressed, break from the loop
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
