@@ -75,8 +75,8 @@ def picamera_ndvi(preview=False, resolution=(640, 480), framerate=60):
             if preview:
                 cv2.imshow("Video Input with NDVI", ndvi_colorized)
                 print('Displaying NDVI...')
-
-            save_image(ndvi, directory=directory)
+            else:
+                save_image(ndvi, directory=directory)
 
         # if the `q` key was pressed, break from the loop
         key = cv2.waitKey(1) & 0xFF
