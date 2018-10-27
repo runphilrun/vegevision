@@ -48,7 +48,7 @@ def make_dir(directory):
 
 def save_image(image, directory='capture/'):
     make_dir(directory)
-    filename = str(get_time_ms) + '.jpg'
+    filename = str(get_time_ms()) + '.jpg'
     cv2.imwrite(filename, image)
     print('saved {0}{1}'.format(directory, filename))
 
@@ -58,7 +58,7 @@ def picamera_ndvi(resolution=(640, 480), framerate=60):
     time.sleep(2)
     print('Video stream started.')
 
-    directory = 'capture_' + str(get_time_ms)
+    directory = 'capture_' + str(get_time_ms())
 
     # loop over the frames from the video stream indefinitely
     while True:
