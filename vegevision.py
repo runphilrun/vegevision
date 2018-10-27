@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 import csv
+import utils
 
 
 def load_cmap(csv_file, name='custom_cmap'):
@@ -14,7 +15,7 @@ def load_cmap(csv_file, name='custom_cmap'):
     In the future this function will be updated to handle files
     containing headers and floats or hex as values.
     '''
-    # read in rows as color indices 
+    # read in rows as color indices
     colors = []
     with open(csv_file) as f:
         reader = csv.reader(f)

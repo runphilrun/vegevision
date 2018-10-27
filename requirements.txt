@@ -1,5 +1,6 @@
-rasterio
-matplotlib
-retrying
-requests
-opencv-python
+requests==2.18.4
+numpy==1.15.1
+rasterio==1.0.8
+matplotlib==3.0.0
+picamera==1.13
+opencv-python==3.4.3.18
