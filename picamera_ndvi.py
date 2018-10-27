@@ -35,7 +35,7 @@ def apply_custom_colormap(image_gray, cmap=plt.get_cmap('seismic')):
 
 def get_time_ms():
     '''Return time since epoch in milliseconds.'''
-    return lambda: int(round(time.time() * 1000))
+    return int(round(time.time() * 1000))
 
 
 def make_dir(directory):
@@ -81,9 +81,9 @@ def picamera_ndvi(resolution=(640, 480), framerate=60):
         if key == ord("q"):
             break
 
-        # do a bit of cleanup
-        cv2.destroyAllWindows()
-        stream.stop()
+    # do a bit of cleanup
+    cv2.destroyAllWindows()
+    stream.stop()
 
 
 def main():
