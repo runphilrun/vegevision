@@ -63,7 +63,7 @@ def picamera_ndvi(resolution=(640, 480), framerate=60):
     while True:
         # grab the frame from the threaded video stream
         frame = stream.read()
-        b, _, r = cv2.split(frame)
+        b, g, r = cv2.split(frame)
 
         # get NDVI from RGB image
         ndvi = vegevision.get_ndvi(b, r)
