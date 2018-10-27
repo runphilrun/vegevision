@@ -63,17 +63,16 @@ def picamera_ndvi(resolution=(640, 480), framerate=60):
     while True:
         # grab the frame from the threaded video stream
         frame = stream.read()
-        b, g, r = cv2.split(frame)
-
-        # get NDVI from RGB image
-        ndvi = vegevision.get_ndvi(b, r)
-        ndvi_colorized = apply_custom_colormap(
-            ndvi, cmap=vegevision.load_cmap('NDVI_VGYRM-lut.csv'))
-
-        # show the frame
-        cv2.imshow("Video Input with NDVI", ndvi_colorized)
-        print('Displaying NDVI...')
-        save_image(ndvi, directory=directory)
+        if frame.shape[2] == 3:
+            b, g, r = cv2.split(frame)
+            # get NDVI from RGB image
+            ndvi = vegevision.get_ndvi(b, r)
+            ndvi_colorized = apply_custom_colormap(
+                ndvi, cmap=vegevision.load_cmap('NDVI_VGYRM-lut.csv'))
+            # show the frame
+            cv2.imshow("Video Input with NDVI", ndvi_colorized)
+            print('Displaying NDVI...')
+            save_image(ndvi, directory=directory)
 
         # if the `q` key was pressed, break from the loop
         key = cv2.waitKey(1) & 0xFF
