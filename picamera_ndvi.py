@@ -55,6 +55,7 @@ def save_image(image, directory='capture/'):
 
 def picamera_ndvi(resolution=(640, 480), framerate=60):
     stream = PiVideoStream(resolution=resolution, framerate=framerate).start()
+    time.sleep(2)
     print('Video stream started.')
 
     directory = 'capture_' + str(get_time_ms)
@@ -63,7 +64,7 @@ def picamera_ndvi(resolution=(640, 480), framerate=60):
     while True:
         # grab the frame from the threaded video stream
         frame = stream.read()
-        if frame.shape[2] == 3:
+        if frame is not None:
             b, g, r = cv2.split(frame)
             # get NDVI from RGB image
             ndvi = vegevision.get_ndvi(b, r)
