@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 import csv
-import utils
 
 
 def load_cmap(csv_file, name='custom_cmap'):
