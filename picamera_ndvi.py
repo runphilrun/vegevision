@@ -53,12 +53,12 @@ def save_image(image, directory='capture/'):
     print('saved {0}{1}'.format(directory, filename))
 
 
-def picamera_ndvi(resolution=(640, 480), framerate=60):
+def picamera_ndvi(preview=False, resolution=(640, 480), framerate=60):
     stream = PiVideoStream(resolution=resolution, framerate=framerate).start()
     time.sleep(2)
     print('Video stream started.')
 
-    directory = 'capture_' + str(get_time_ms())
+    directory = 'capture_' + str(get_time_ms() + '/')
 
     # loop over the frames from the video stream indefinitely
     while True:
@@ -72,8 +72,10 @@ def picamera_ndvi(resolution=(640, 480), framerate=60):
                 255 * ndvi.astype(np.uint8),
                 cmap=vegevision.load_cmap('NDVI_VGYRM-lut.csv'))
             # show the frame
-            cv2.imshow("Video Input with NDVI", ndvi_colorized)
-            print('Displaying NDVI...')
+            if preview:
+                cv2.imshow("Video Input with NDVI", ndvi_colorized)
+                print('Displaying NDVI...')
+                
             save_image(ndvi, directory=directory)
 
         # if the `q` key was pressed, break from the loop
@@ -87,7 +89,7 @@ def picamera_ndvi(resolution=(640, 480), framerate=60):
 
 
 def main():
-    picamera_ndvi()
+    picamera_ndvi(preview=True)
 
 
 if __name__ == '__main__':
