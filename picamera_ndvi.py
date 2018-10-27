@@ -48,9 +48,9 @@ def make_dir(directory):
 
 def save_image(image, directory='capture/'):
     make_dir(directory)
-    filename = str(get_time_ms()) + '.jpg'
+    filename = directory + str(get_time_ms()) + '.jpg'
     cv2.imwrite(filename, image)
-    print('saved {0}{1}'.format(directory, filename))
+    print('saved {0}'.format(filename))
 
 
 def picamera_ndvi(preview=False, resolution=(640, 480), framerate=60):
